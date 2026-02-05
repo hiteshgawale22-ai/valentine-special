@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Valentine 💖</title>
 
 <!-- CONFETTI LIBRARY -->
@@ -22,13 +22,13 @@
 
   .card {
     background: white;
-    padding: 35px;
-    border-radius: 24px;
+    padding: 30px;       /* medium padding */
+    border-radius: 18px;
     text-align: center;
     position: relative;
-    width: 90%;       /* mobile-friendly */
-    max-width: 4000px; /* desktop max */
-    min-width: 300px; /* mobile min */
+    width: 80%;          /* medium width */
+    max-width: 400px;    /* desktop max */
+    min-width: 320px;    /* mobile min */
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     animation: pop 0.5s ease;
   }
@@ -42,15 +42,15 @@
     margin-bottom: 20px;
     color: #ff4d6d;
     font-weight: bold;
-    font-size: calc(20px + 2vw); /* responsive font */
+    font-size: calc(20px + 1.5vw); /* responsive + medium */
     text-align: center;
   }
 
   button {
-    padding: 12px 30px;
+    padding: 12px 28px;
     border: none;
     border-radius: 25px;
-    font-size: 18px;
+    font-size: 17px;
     cursor: pointer;
   }
 
@@ -69,6 +69,12 @@
     font-size: 14px;
     color: #777;
   }
+
+  #from {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+  }
 </style>
 </head>
 
@@ -79,6 +85,7 @@
   <button id="yes">Yes 💖</button>
   <button id="no">No 🙄</button>
   <div id="msg">Soch lo acche se 😏</div>
+  <p id="from"></p>
 </div>
 
 <script>
@@ -87,15 +94,25 @@
   const card = document.querySelector(".card");
   const msg = document.getElementById("msg");
   const question = document.getElementById("question");
+  const from = document.getElementById("from");
 
   // ----------------------
-  // NAME FROM URL (comma removed)
+  // URL PARAMETERS
   const params = new URLSearchParams(window.location.search);
   const name = params.get("name");
+  const sender = params.get("from");
+  const email = params.get("email");
+
+  // NAME WITHOUT COMMA
   if(name && name.trim() !== "") {
     question.innerText = `${name} will you be my Valentine? 💖`;
   } else {
     question.innerText = "Will you be my Valentine? 💖";
+  }
+
+  // FROM LINE
+  if(sender){
+    from.innerText = `From: ${sender}${email ? " ("+email+")" : ""}`;
   }
 
   // ----------------------
