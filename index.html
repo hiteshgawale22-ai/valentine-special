@@ -16,6 +16,7 @@
     align-items: center;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     font-family: 'Poppins', sans-serif;
+    overflow: hidden;
   }
 
   .card {
@@ -26,10 +27,18 @@
     position: relative;
     width: 320px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation:pop 0.5s ease;
+  }
+
+  @keyframes pop{
+    from{transform:scale(.7);opacity:0}
+    to{transform:scale(1);opacity:1}
   }
 
   h2 {
     margin-bottom: 20px;
+    font-size: 22px;
+    color: #ff4d6d;
   }
 
   button {
@@ -62,10 +71,8 @@
 
 <div class="card">
   <h2 id="question">Will you be my Valentine? 💕</h2>
-
-  <button id="yes">Yes</button>
-  <button id="no">No</button>
-
+  <button id="yes">Yes 💖</button>
+  <button id="no">No 🙄</button>
   <div id="msg">Soch lo acche se 😏</div>
 </div>
 
@@ -76,13 +83,16 @@
   const msg = document.getElementById("msg");
   const question = document.getElementById("question");
 
-  // NAME FROM URL
+  // ----------------------
+  // NAME FROM URL (Dynamic)
   const params = new URLSearchParams(window.location.search);
   const name = params.get("name");
-  if (name) {
+  if(name && name.trim() !== "") {
     question.innerText = `${name}, will you be my Valentine? 💖`;
   }
 
+  // ----------------------
+  // NO BUTTON BEHAVIOR
   let count = 0;
   const messages = [
     "Arey ruk ja 😭",
@@ -102,25 +112,39 @@
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 
-    msg.innerText = messages[Math.min(count, messages.length - 1)];
+    msg.innerText = messages[Math.min(count, messages.length-1)];
     count++;
   }
 
-  // Desktop
+  // Mouse hover
   noBtn.addEventListener("mouseover", moveNo);
-
-  // Mobile
+  // Mobile touch
   noBtn.addEventListener("touchstart", moveNo);
 
+  // ----------------------
+  // YES BUTTON
   yesBtn.addEventListener("click", () => {
     question.innerText = "Yayyy! 💖🥰";
     msg.innerText = "Best decision ever 😌";
 
+    // Confetti effect
     confetti({
       particleCount: 200,
       spread: 70,
       origin: { y: 0.6 }
     });
+
+    // Optional: add floating hearts
+    setInterval(()=>{
+      const heart = document.createElement("div");
+      heart.innerHTML = "❤️";
+      heart.style.position = "fixed";
+      heart.style.left = Math.random()*100 + "vw";
+      heart.style.bottom = "0px";
+      heart.style.fontSize = "24px";
+      document.body.appendChild(heart);
+      setTimeout(()=>heart.remove(), 2000);
+    },200);
   });
 </script>
 
