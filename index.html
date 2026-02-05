@@ -84,11 +84,13 @@
   const question = document.getElementById("question");
 
   // ----------------------
-  // NAME FROM URL (Dynamic)
+  // NAME FROM URL
   const params = new URLSearchParams(window.location.search);
   const name = params.get("name");
   if(name && name.trim() !== "") {
     question.innerText = `${name}, will you be my Valentine? 💖`;
+  } else {
+    question.innerText = "Will you be my Valentine? 💖";
   }
 
   // ----------------------
@@ -134,7 +136,7 @@
       origin: { y: 0.6 }
     });
 
-    // Optional: add floating hearts
+    // Floating hearts
     setInterval(()=>{
       const heart = document.createElement("div");
       heart.innerHTML = "❤️";
