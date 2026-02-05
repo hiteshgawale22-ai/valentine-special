@@ -1,111 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Valentine Special 💖</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Valentine 💖</title>
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+<!-- CONFETTI LIBRARY -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    body{
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      background:linear-gradient(135deg,#ff4d6d,#ff8fab);
-      font-family:Arial, Helvetica, sans-serif;
-      overflow:hidden;
-    }
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    font-family: 'Poppins', sans-serif;
+  }
 
-    .card{
-      background:white;
-      padding:40px;
-      border-radius:20px;
-      text-align:center;
-      box-shadow:0 15px 40px rgba(0,0,0,0.3);
-      width:90%;
-      max-width:400px;
-    }
+  .card {
+    background: white;
+    padding: 35px;
+    border-radius: 18px;
+    text-align: center;
+    position: relative;
+    width: 320px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  }
 
-    h1{
-      color:#ff4d6d;
-      margin-bottom:30px;
-      font-size:28px;
-    }
+  h2 {
+    margin-bottom: 20px;
+  }
 
-    .buttons{
-      position:relative;
-      height:80px;
-    }
+  button {
+    padding: 10px 26px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+  }
 
-    button{
-      padding:12px 28px;
-      font-size:18px;
-      border:none;
-      border-radius:10px;
-      cursor:pointer;
-      transition:0.2s;
-    }
+  #yes {
+    background: #ff4d6d;
+    color: white;
+  }
 
-    #yes{
-      background:#ff4d6d;
-      color:white;
-    }
+  #no {
+    background: #ddd;
+    position: absolute;
+  }
 
-    #no{
-      background:#ddd;
-      position:absolute;
-      right:0;
-    }
-  </style>
+  #msg {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #777;
+  }
+</style>
 </head>
+
 <body>
 
-  <div class="card">
-    <h1>Will you be my Valentine? 💘</h1>
+<div class="card">
+  <h2 id="question">Will you be my Valentine? 💕</h2>
 
-    <div class="buttons">
-      <button id="yes" onclick="yesClicked()">YES</button>
-      <button id="no" onmouseover="moveNo()">NO</button>
-    </div>
-  </div>
+  <button id="yes">Yes</button>
+  <button id="no">No</button>
 
-  <script>
-    function moveNo(){
-      const noBtn = document.getElementById("no");
-      const x = Math.random() * (window.innerWidth - 120);
-      const y = Math.random() * (window.innerHeight - 80);
+  <div id="msg">Soch lo acche se 😏</div>
+</div>
 
-      noBtn.style.position = "fixed";
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    }
+<script>
+  const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
+  const card = document.querySelector(".card");
+  const msg = document.getElementById("msg");
+  const question = document.getElementById("question");
 
-    function yesClicked(){
-      document.body.innerHTML = `
-        <div style="
-          height:100vh;
-          display:flex;
-          justify-content:center;
-          align-items:center;
-          background:linear-gradient(135deg,#ff4d6d,#ff8fab);
-          color:white;
-          text-align:center;
-          font-family:Arial;
-        ">
-          <h1 style="font-size:40px;">
-            😍 I knew it! <br>
-            Happy Valentine’s Day 💖
-          </h1>
-        </div>
-      `;
-    }
-  </script>
+  // NAME FROM URL
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get("name");
+  if (name) {
+    question.innerText = `${name}, will you be my Valentine? 💖`;
+  }
+
+  let count = 0;
+  const messages = [
+    "Arey ruk ja 😭",
+    "Itna bhi bhaav nahi 😤",
+    "Dil tod diya 💔",
+    "Last chance 😶",
+    "Ab toh Yes hi bacha 😏"
+  ];
+
+  function moveNo() {
+    const maxX = card.clientWidth - noBtn.offsetWidth;
+    const maxY = card.clientHeight - noBtn.offsetHeight;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    msg.innerText = messages[Math.min(count, messages.length - 1)];
+    count++;
+  }
+
+  // Desktop
+  noBtn.addEventListener("mouseover", moveNo);
+
+  // Mobile
+  noBtn.addEventListener("touchstart", moveNo);
+
+  yesBtn.addEventListener("click", () => {
+    question.innerText = "Yayyy! 💖🥰";
+    msg.innerText = "Best decision ever 😌";
+
+    confetti({
+      particleCount: 200,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  });
+</script>
 
 </body>
 </html>
